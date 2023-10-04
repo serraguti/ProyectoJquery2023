@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        img {
+            width: 150px;
+            height: 150px;
+        }
+    </style>
+</head>
+<body>
+    <img src="images/batman.png"/>
+    <img src="images/batman.png"/>
+    <img src="images/batman.png"/>
+    <img src="images/batman.png"/>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("img").mouseover(function() {
+                $(this).attr("src", "images/joker.jpg");
+            })
+            $("img").mouseout(function() {
+                $(this).attr("src", "images/batman.png");
+            })
+            $("img").click(function() {
+                var imagen = $(this).attr("src");
+                console.log("Pulsando sobre: " + imagen);
+                if (imagen == "images/batman.png"){
+                    console.log("Soy Batman");
+                }else{
+                    console.log("Alegrame el día...");
+                }
+            })
+        })
+    </script>
+</body>
+</html>
