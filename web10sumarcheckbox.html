@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Sumar Checkbox</h1>
+    <button>Imagen 1</button>
+    <button>Imagen 2</button>
+    <button>Imagen 3</button>
+    <hr/>
+    <img src="images/batman.png" style="width:150px; height: 150px;"/>
+    <img src="images/batman.png" style="width:150px; height: 150px;"/>
+    <img src="images/batman.png" style="width:150px; height: 150px;"/>
+
+
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#rango").change(function(){
+                var valorrango = parseInt($(this).val());
+                $("#valorrango").text(valorrango);
+                $("#padre").html("");
+                for (var i = 1; i <= valorrango; i++){
+                    var aleatorio = parseInt((Math.random() * 500)) + 1;
+                    var chk = $("<input>",{
+                        "value": aleatorio,
+                        "type": "checkbox"
+                    })
+                    var label = $("<label>", {
+                        "text": aleatorio
+                    })
+                    $("#padre").append(chk);
+                    $("#padre").append(label);
+                    chk.change(function() {
+                        $("#resultado").text("0");
+                        var resultado = 0;
+                        //PODRIAMOS REALIZAR LA MISMA SOLUCION PERO 
+                        //UTILIZANDO EACH????
+                        $("input[type='checkbox']:checked").each(function() {
+                            var valor = parseInt($(this).val());
+                            resultado += valor;
+                            $("#resultado").text(resultado);
+                        })
+                    })
+                }
+            })
+        })
+    </script>
+</body>
+</html>

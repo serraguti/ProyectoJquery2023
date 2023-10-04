@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Bucle Each</h1>
+    <p>Párrafo 1</p>
+    <p>Párrafo 2</p>
+    <p>Párrafo 3</p>
+    <p>Párrafo 4</p>
+    <p>Párrafo 5</p>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            //AL PULSAR SOBRE CUALQUIER <p>
+            //CAMBIAMOS EL COLOR DE CADA UNA
+            $("p").click(function() {
+                var colores = ["blue", "fuchsia"
+                , "orange", "yellow", "red", "green"];
+                //RECORREMOS CADA UNA DE LAS ETIQUETAS
+                $("p").each(function(){
+                    var indice = parseInt(Math.random() * colores.length);
+                    var color = colores[indice];
+                    $(this).css("background-color", color);
+                });
+            })
+        })
+    </script>
+</body>
+</html>
