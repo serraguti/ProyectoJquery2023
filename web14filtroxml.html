@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Filtros XML Departamentos</h1>
+    <label>Introduzca ID</label>
+    <input type="text" id="cajaid"/>
+    <button id="botonbuscarid">Buscar departamento</button>
+    <hr/>
+    <label>Introduzca localidad</label>
+    <input type="text" id="cajalocalidad"/>
+    <button id="botonbuscarlocalidad">Buscar localidades</button>
+    <hr/>
+    <h1 style="color:red" id="mensaje"></h1>
+    <ul id="listadepartamentos"></ul>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#botonbuscarid").click(function() {
+                var id = $("#cajaid").val();
+                var html = "";
+                console.log("Antes del servicio");
+                $.get("documents/departamentos.xml", function(data){
+                    console.log("Leyendo...");
+                    //NECESITAMOS FILTRAR POR ATRIBUTO
+                    //DEPT[DEPT_NO=10]
+                    var filtro = "DEPT[DEPT_NO=" + id + "]";
+                    //COMO EL ID ES UNICO, NO REALIZAMOS each
+                    var nododept = $(data).find(filtro).first();
+                    var nombre = $(nododept).find("DNOMBRE").text();
+                    var localidad = $(nododept).find("LOC").text();
+                    html = "<li>" + nombre + ", " + localidad + "</li>";
+                    $("#listadepartamentos").html(html);
+                })
+                console.log("Despues del servicio");                
+            })
+
+            $("#botonbuscarlocalidad").click(function() {
+                var localidad = $("#cajalocalidad").val();
+                $("#listadepartamentos").html("");
+                $("#mensaje").html("");
+                $.get("documents/departamentos.xml", function(data){
+                    //LOC:contains(GIJON)
+                    var filtro = "LOC:contains(" + localidad + ")";
+                    if ($(data).find(filtro).length == 0){
+                        $("#mensaje").text("No existe ningún departamento en " + localidad);
+                    }else{
+                        var html = "";
+                        $(data).find(filtro).each(function(){
+                            var nodopadre = $(this).parent();
+                            var contenido = $(nodopadre).find("DNOMBRE").text();
+                            console.log($(this));
+                            html += "<li>" + contenido + "</li>";
+                        })
+                        $("#listadepartamentos").html(html);
+                    }
+                })
+            })
+        })
+    </script>
+</body>
+</html>

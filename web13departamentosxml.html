@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Departamentos Atributos XML</h1>
+    <button id="botondepartamentos">Cargar departamentos</button>
+    <table id="tabladepartamentos">
+        <thead>
+            <tr>
+                <th>Número</th>
+                <th>Nombre</th>
+                <th>Localidad</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#botondepartamentos").click(function() {
+                $.get("documents/departamentos.xml", function(data){
+                    console.log("Leyendo servicio");
+                    var html = "";
+                    //NECESITAMOS RECUPERAR CADA ETIQUETA <DEPT>
+                    $(data).find("DEPT").each(function() {
+                        html += "<tr>";
+                        //PARA EL ATRIBUTO, UTILIZAMOS .attr("ATRIBUTO")
+                        var numero = $(this).attr("DEPT_NO");
+                        var nombre = $(this).find("DNOMBRE").first().text();
+                        var localidad = $(this).find("LOC").text();
+                        html += "<td>" + numero + "</td>";
+                        html += "<td>" + nombre + "</td>";
+                        html += "<td>" + localidad + "</td>";
+                        html += "</tr>";
+                    })
+                    $("#tabladepartamentos tbody").html(html);
+                })
+            })
+        })
+    </script>
+</body>
+</html>

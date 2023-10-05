@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        img {
+            width: 80px;
+            height: 80px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Generar botones/imágenes dinámicos</h1>
+    <label>Seleccione número de elementos</label>
+    <input type="range" min="1" max="50" value="1" id="rango"/>
+    <span id="valorrango"></span>
+    <br/>
+    <div id="contenedorbotones"></div>
+    <div id="contenedorimagenes"></div>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#rango").change(function(){
+                var numero = parseInt($(this).val());
+                $("#valorrango").text("Elementos generados: " + numero);
+                $("#contenedorbotones").text("");
+                $("#contenedorimagenes").text("");
+                for (var i = 1; i <= numero; i++){
+                    var boton = $("<button>", {
+                        "text": "Imagen " + i,
+                        "data-imagen": i
+                    })
+                    var imagen = $("<img>", {
+                        "src": "images/batman.png",
+                        "id": "imagen" + i
+                    })
+                    $("#contenedorbotones").append(boton);
+                    $("#contenedorimagenes").append(imagen);
+                    boton.click(function() {
+                        var id = $(this).data("imagen");
+                        $("#imagen" + id).attr("src", "images/joker.jpg");
+                    })
+                }
+            })
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="botonload">Toma toma</button>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#botonload").click(function() {
+                var urldepartamentos = "https://apicruddepartamentosxml.azurewebsites.net/api/departamentos";
+                var datos = "<Departamento><IdDepartamento>22</IdDepartamento><Nombre>jardineria</Nombre><Localidad>murcia</Localidad></Departamento>";
+                $.ajax({
+                    url: urldepartamentos,
+                    data: datos, 
+                    type: 'POST',
+                    contentType: "text/xml",
+                    dataType: "text",
+                    success : function(){
+                        console.log("CORRECTO");
+                    },
+                    error : function (xhr, ajaxOptions, thrownError){  
+                        console.log(xhr.status);          
+                        console.log(thrownError);
+                    } 
+                });
+            })
+        })
+    </script>
+</body>
+</html>
