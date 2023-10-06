@@ -7,6 +7,7 @@
 </head>
 <body>
     <button id="botonload">Toma toma</button>
+    <button id="botondoctor">A por los doctores</button>
     <script src="js/jquery-3.7.1.min.js"></script>
     <script>
         $(document).ready(function() {
@@ -28,6 +29,26 @@
                     } 
                 });
             })
+            $("#botondoctor").click(function() {
+                var urldepartamentos = "https://apicruddoctoresxml.azurewebsites.net/api/doctores";
+                var datos = 
+                    "<Doctor><Apellido>Currelas F.</Apellido><Especialidad>Psicopatia</Especialidad><IdDoctor>125</IdDoctor><IdHospital>17</IdHospital><Salario>256000</Salario></Doctor>";
+                //var datos = "<Departamento><IdDepartamento>22</IdDepartamento><Nombre>jardineria</Nombre><Localidad>murcia</Localidad></Departamento>";
+                $.ajax({
+                    url: urldepartamentos,
+                    data: datos, 
+                    type: 'POST',
+                    contentType: "text/xml",
+                    dataType: "text",
+                    success : function(){
+                        console.log("CORRECTO");
+                    },
+                    error : function (xhr, ajaxOptions, thrownError){  
+                        console.log(xhr.status);          
+                        console.log(thrownError);
+                    } 
+                });
+            })            
         })
     </script>
 </body>

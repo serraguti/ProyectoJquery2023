@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Clientes XML</h1>
+    <div id="contenedorclientes"></div>
+    <hr/>
+    <div id="datoscliente"></div>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $.get("documents/clientes.xml", function(data){
+                $(data).find("CLIENTE").each(function() {
+                    var nombre = $(this).find("NOMBRE").text();
+                    var idcliente = $(this).attr("IDCLIENTE");
+                    var botoncliente = $("<button>", {
+                        "text": nombre, "data-id": idcliente, 
+                        "value": idcliente
+                    })
+                    $("#contenedorclientes").append(botoncliente);
+                    //DEBEMOS INCLUIR FUNCIONALIDAD A CADA BOTON
+                    botoncliente.click(function(){
+                        var idcliente = $(this).val();
+                        console.log("Idcliente: " + idcliente);
+                        $.get("documents/clientes.xml", function(data){
+                            var filtro = "CLIENTE[IDCLIENTE=" + idcliente + "]";
+                            var nodocliente = $(data).find(filtro).first();
+                            var nombre = $(nodocliente).find("NOMBRE").text();
+                            var email = $(nodocliente).find("EMAIL").text();
+                            var imagen = $(nodocliente).find("IMAGENCLIENTE").text();
+                            var html = "<h1 style='color:red'>" + nombre + "</h1>";
+                            html += "<p>" + email + "</p>";
+                            html += "<img src='" + imagen + "' style='width:150px; height: 150px'/>";
+                            $("#datoscliente").html(html);
+                        })
+                    })
+                })
+            })
+        })
+    </script>
+</body>
+</html>
