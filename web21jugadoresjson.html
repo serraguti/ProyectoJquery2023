@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Detalle Jugadores JSON</h1>
+    <select id="selectjugador"></select>
+    <div id="datosjugador"></div>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $.getJSON("documents/jugadores.json", function(data){
+                $.each(data.jugadores, function(index, jugador){
+                    var name = jugador.nombre;
+                    var option = $("<option>", { "text": name});
+                        $("#selectjugador").append(option);
+                })
+            })
+            //CUANDO SELECCIONEMOS UN JUGADOR, DIBUJAMOS SUS DATOS
+            $("#selectjugador").change(function() {
+                //EXISTE UNA PROPIEDAD LLAMADA selectedIndex QUE 
+                //NOS DEVUELVE EL INDICE DE UN ELEMENTO DENTRO DE UN <select>
+                var index = $(this).prop("selectedIndex");
+                $.ajax({
+                    "url": "documents/jugadores.json", 
+                    "method": "GET",
+                    success: function(data){
+                        var player = data.jugadores[index];
+                        var html = "<h1 style='color:red'>" + player.nombre + "</h1>";
+                        html += "<h2>Posición: " + player.posicion + "</h2>";
+                        html += "<h2>Número: " + player.numero + "</h2>";
+                        html += "<h2>Edad: " + player.edad + "</h2>";
+                        html += "<img src='" + player.imagen + "' "
+                        + "style='width:150px; height: 150px'/>";
+                        $("#datosjugador").html(html);
+                    }
+                })
+            })
+        })
+    </script>
+</body>
+</html>
