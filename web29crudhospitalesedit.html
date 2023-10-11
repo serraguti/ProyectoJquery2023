@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index Hospitales</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Crud Hospitales</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" 
+                href="web29crudhospitalesindex.html">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="web29crudhospitalescreate.html">
+                    Nuevo Hospital
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>   
+      <h1>Edit Hospital</h1> 
+      <form>
+        <label>Id Hospital</label>
+        <input type="text" id="cajaid" disabled class="form-control"/><br/>
+        <label>Nombre</label>
+        <input type="text" id="cajanombre" class="form-control"/><br/>
+        <label>Dirección</label>
+        <input type="text" id="cajadireccion" class="form-control"/><br/>
+        <label>Teléfono</label>
+        <input type="text" id="cajatelefono" class="form-control"/><br/>
+        <label>Camas</label>
+        <input type="text" id="cajacamas" class="form-control"/><br/>
+        <button type="button" id="botonupdate" 
+            class="btn btn-success">
+            Edit
+        </button>
+      </form>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script>
+        var urlHospitales = "https://apicrudhospital.azurewebsites.net/";
+        $(document).ready(function() {
+            //NECESITO BUSCAR EL ID DE HOSPITAL EN URL
+            var params = new window.URLSearchParams(window.location.search);
+            var idhospitalUrl = params.get("idhospital");
+            var requestFind = "webresources/hospitales/" + idhospitalUrl;
+            $.ajax({
+                "url": urlHospitales + requestFind,
+                "type": "GET", 
+                success: function(data){
+                    $("#cajaid").val(data.idhospital);
+                    $("#cajanombre").val(data.nombre);
+                    $("#cajadireccion").val(data.direccion);
+                    $("#cajatelefono").val(data.telefono);
+                    $("#cajacamas").val(data.camas);
+                }
+            })
+
+            $("#botonupdate").click(function() {
+                var requestPut = "webresources/hospitales/put";
+                var idhospital = parseInt($("#cajaid").val());
+                var nombre = $("#cajanombre").val();
+                var direccion = $("#cajadireccion").val();
+                var tlf = $("#cajatelefono").val();
+                var camas = parseInt($("#cajacamas").val());
+                var hospital = new Object();
+                hospital.idhospital = idhospital;
+                hospital.nombre = nombre;
+                hospital.direccion = direccion;
+                hospital.telefono = tlf;
+                hospital.camas = camas;
+                var hospitalJson = JSON.stringify(hospital);
+                $.ajax({
+                    "url": urlHospitales + requestPut, 
+                    "type": "PUT", 
+                    "contentType": "application/json", 
+                    "data": hospitalJson, 
+                    success: function() {
+                        console.log("Editado");
+                        window.location.href = "web29crudhospitalesindex.html";
+                    }
+                })
+            })
+        })
+    </script>
+</body>
+</html>
